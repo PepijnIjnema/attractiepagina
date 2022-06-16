@@ -18,12 +18,20 @@ if($action == 'create')
         $errors[] = "Vul een titel in!";
     }
 
-    $themeland = $_POST['themeland'];
+    $themeland = $_POST['themeland']; 
     if(empty($themeland))
     {
         $errors[] = "Vul een themagebied in!";
     }
 
+
+    $min_length = $_POST['min_length'];
+    if(empty($min_length))
+    {
+        $errors[] = "Vul een minimale lengte in!";
+    }
+
+    
     if(isset($_POST['fast_pass']))
     {
         $fast_pass = true;
@@ -31,6 +39,12 @@ if($action == 'create')
     else
     {
         $fast_pass = false;
+    }
+    
+    $description = $_POST['description'];
+    if(empty($description))
+    {
+        $errors[] = "Vul een beschrijving in!";
     }
 
     $target_dir = "../../img/attracties/";
@@ -52,13 +66,16 @@ if($action == 'create')
 
     //Query
     require_once 'conn.php';
-    $query = "INSERT INTO rides (title, themeland, fast_pass, img_file) VALUES(:title, :themeland, :fast_pass, :img_file)";
+    $query = "INSERT INTO rides (title, themeland, min_length, fast_pass, img_file, description ) VALUES(:title, :themeland, :min_length, :fast_pass, :img_file, :description)";
     $statement = $conn->prepare($query);
     $statement->execute([
         ":title" => $title,
         ":themeland" => $themeland,
+        ":min_length" => $min_length,
         ":fast_pass" => $fast_pass,
         ":img_file" => $target_file,
+        ":description" => $description
+
     ]);
 
     header("Location: ../attracties/index.php");
@@ -70,6 +87,8 @@ if($action == "update")
     $id = $_POST['id'];
     $title = $_POST['title'];
     $themeland = $_POST['themeland'];
+    $min_length = $_POST['min_length'];
+    $description = $_POST['description'];
     if(isset($_POST['fast_pass']))
     {
         $fast_pass = true;
@@ -105,14 +124,17 @@ if($action == "update")
 
     //Query
     require_once 'conn.php';
-    $query = "UPDATE rides SET title = :title, themeland = :themeland, fast_pass = :fast_pass, img_file = :img_file WHERE id = :id";
+    $query = "UPDATE rides SET title = :title, themeland = :themeland, min_length = :min_length , fast_pass = :fast_pass, description = :description, img_file = :img_file WHERE id = :id";
     $statement = $conn->prepare($query);
     $statement->execute([
         ":title" => $title,
         ":themeland" => $themeland,
+        ":min_length" => $min_length,
         ":fast_pass" => $fast_pass,
+        ":description" => $description,
         ":img_file" => $target_file,
         ":id" => $id
+
     ]);
 
     header("Location: ../attracties/index.php");
