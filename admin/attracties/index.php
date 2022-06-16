@@ -44,12 +44,21 @@ if(!isset($_SESSION['user_id']))
                 <th>Themagebied</th>
                 <th>Min. lengte</th>
                 <th>Fastpass</th>
+                <th>Beschrijving</th>
+                <th>Aanpassen</th>
             </tr>
             <?php foreach($rides as $ride): ?>
                 <tr>
                     <td><?php echo $ride['title']; ?></td>
                     <td><?php echo $ride['themeland']; ?></td>
-                    <td><?php echo $ride['min_length']; ?> cm</td>
+                    <td><?php 
+                    if($ride['min_length'] != 0) {
+                        echo $ride['min_length'], " cm"; }
+                        else {
+                            echo "0 cm";
+                        }
+                        ?></td>
+
                     <td><?php
                         if ($ride['fast_pass'] == 1) {
                             $ride['fast_pass'] = "Ja";
